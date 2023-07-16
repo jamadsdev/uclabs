@@ -1,13 +1,22 @@
 <!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
 
-<div class="container h-full mx-auto flex justify-center items-center">
-	<div class="space-y-5">
-		<h1 class="h1">Let's get cracking bones!</h1>
-		<p>Start by exploring:</p>
-		<ul>
-			<li><code class="code">/src/routes/+layout.svelte</code> - barebones layout, the CSS import order is critical!</li>
-			<li><code class="code">/src/app.postcss</code> - minimal css to make the page full screen, may not be relevant for your project</li>
-			<li><code class="code">/src/routes/+page.svelte</code> - this page, you can replace the contents</li>
-		</ul>
+<div class="flex justify-center gap-20 pt-20">
+	<div class="card variant-soft-secondary shawod-lg w-96">
+		<header class="card-header"><img src="/img/wxc.webp" alt="" /></header>
+		<section class="p-4">
+			<div class="p-4 space-y-4">
+				<h3 class="h3">Webex Calling</h3>
+				<article>
+					<p>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae molestias quis autem
+						labore pariatur laborum numquam unde at voluptates, accusantium doloremque officia
+						cumque architecto ex? Dolorum quibusdam qui iure aliquid.
+					</p>
+				</article>
+			</div>
+		</section>
+		<footer class="card-footer flex justify-end">
+			<a href="/wxc" class="btn variant-ghost-tertiary">Start Here</a>
+		</footer>
 	</div>
 </div>
