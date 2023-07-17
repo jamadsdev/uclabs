@@ -10,6 +10,12 @@
 		''}"
 >
 	<AppRail background="bg-transparent" border="border-r border-surface-500/30">
+		<AppRailAnchor href="/docs" selected={$page.url.pathname === '/docs'}>
+			<svelte:fragment slot="lead">
+				<Icon name="book" width="1.5em" height="1.5em" />
+			</svelte:fragment>
+			<span>Docs</span>
+		</AppRailAnchor>
 		<!-- <hr class="opacity-30" /> -->
 		<AppRailAnchor href="/wxc" selected={$page.url.pathname === '/wxc'}>
 			<svelte:fragment slot="lead">

@@ -1,3 +1,5 @@
 import { writable } from 'svelte/store';
 
-export const storeToken = writable(undefined);
+export const storeWxcToken = writable('');
+
+export const storeWxcTab = writable(0);

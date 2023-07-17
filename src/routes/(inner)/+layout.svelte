@@ -2,31 +2,28 @@
 	/** @type {import('./$types').LayoutData} */
 	import { AppShell } from '@skeletonlabs/skeleton';
 
-	import { storeToken } from '$lib/stores.js';
+	import { storeWxcToken } from '$lib/stores.js';
 
 	export let data;
-	let accessToken = '';
 
-	function saveToken(value) {
-		console.log('Token', accessToken);
-		storeToken.update((value) => value);
-		console.log('Submit', value);
+	function clearToken() {
+		$storeWxcToken = '';
 	}
 </script>
 
 <AppShell>
 	<svelte:fragment slot="header">
-		<div class="grid grid-cols-3 lg:grid-cols-4">
+		<div class="grid grid-cols-3 gap-2 lg:grid-cols-4">
 			<div class="col-span-2 lg:col-start-2 lg:col-span-2">
 				<input
-					bind:value={accessToken}
+					bind:value={$storeWxcToken}
 					class="input"
 					type="password"
-					placeholder="Webex Access Token Goes Here"
+					placeholder="Webex Personal Access Token"
 				/>
 			</div>
 			<div>
-				<button class="btn" on:click={saveToken(accessToken)}>Submit</button>
+				<button class="btn variant-glass-primary" on:click={clearToken}>Clear</button>
 			</div>
 		</div>
 	</svelte:fragment>
