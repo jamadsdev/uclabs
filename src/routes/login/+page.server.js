@@ -14,7 +14,7 @@ export const actions = {
 
 		try {
 			await locals.pb.collection('users').authWithPassword(email, password);
-			// console.log('auth store', locals.pb.authStore);
+			console.log('auth store', locals.pb.authStore);
 			if (locals.pb.authStore.baseToken) throw redirect(303, '/docs');
 			// } catch (err) {
 			// 	console.log('Login Error:', err);

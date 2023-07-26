@@ -1,23 +1,23 @@
 <script>
 	/** @type {import('./$types').PageData} */
 	import { TabGroup, Tab } from '@skeletonlabs/skeleton';
-	import { 
+
 	// Stores
-	import { storeWxcToken, storeWxcTab } from '$lib/stores.js';
+	import { storeWxcToken, storeWxcTab, storeUserData } from '$lib/stores.js';
 	// Components
 	import WxcVmPin from '$lib/components/WxcVMPin.svelte';
 
 	export let data;
 </script>
 
-Access Token: {$storeWxcToken}
-{#if $storeWxcTab == ''}
-	Need to enter token
-{:else}
+<!-- Access Token: {$storeWxcToken} -->
+<!-- Display Name: {$storeUserData['displayName']} -->
+<!-- Org Name: {$storeUserData['orgName']} -->
+<div class="pt-5">
 	<TabGroup>
 		<Tab bind:group={$storeWxcTab} name="tab1" value={0}>VM PIN Reset</Tab>
-		<Tab bind:group={$storeWxcTab} name="tab2" value={1}>(label 2)</Tab>
-		<Tab bind:group={$storeWxcTab} name="tab3" value={2}>Bulk Tasks</Tab>
+		<!-- <Tab bind:group={$storeWxcTab} name="tab2" value={1}>TBD</Tab> -->
+		<!-- <Tab bind:group={$storeWxcTab} name="tab3" value={2}>Bulk Tasks</Tab> -->
 		<!-- Tab Panels --->
 		<svelte:fragment slot="panel">
 			{#if $storeWxcTab === 0}
@@ -29,4 +29,4 @@ Access Token: {$storeWxcToken}
 			{/if}
 		</svelte:fragment>
 	</TabGroup>
-{/if}
+</div>

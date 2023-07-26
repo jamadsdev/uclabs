@@ -18,10 +18,13 @@ async function send({ method, path, data, token }) {
 	if (res.ok || res.status == 422) {
 		const text = await res.text();
 
-		return text ? JSON.parse(text) : {};
+		return text ? JSON.parse(text) : { result: 'success' };
 	}
 
-	throw error(res.status);
+	return {
+		error,
+		message: res.statusText
+	};
 }
 
 export function get(path, token) {

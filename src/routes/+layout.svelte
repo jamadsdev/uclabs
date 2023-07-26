@@ -6,7 +6,7 @@
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
 
-	import { AppShell } from '@skeletonlabs/skeleton';
+	import { AppShell, Modal, Toast } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
 
 	import NavHeader from '$lib/components/NavHeader.svelte';
@@ -32,6 +32,9 @@
 		? 'w-0'
 		: 'bg-surface-50-900-token lg:w-auto';
 </script>
+
+<Modal />
+<Toast position="t" />
 
 <AppShell {slotSidebarLeft}>
 	<svelte:fragment slot="header"><NavHeader {loggedin} /></svelte:fragment>

@@ -1,13 +1,7 @@
-/** @type {import('./$types').PageServerLoad} */
+/** @type {import('./$types').RequestHandler} */
+// import { error, fail } from '@sveltejs/kit';
 
-export async function load({ locals }) {
-	if (!locals.pb.authStore.token) {
-		console.log('No User Logged In');
-		return {};
-	} else {
-		return { user: locals.user };
-	}
-}
+// import * as api from '$lib/wxc_api';
 
 export const actions = {
 	submitToken: async ({ request, cookies }) => {
