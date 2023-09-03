@@ -13,7 +13,7 @@
 <!-- Access Token: {$storeWxcToken} -->
 <!-- Display Name: {$storeUserData['displayName']} -->
 <!-- Org Name: {$storeUserData['orgName']} -->
-<div class="pt-5">
+<div>
 	<TabGroup>
 		<Tab bind:group={$storeWxcTab} name="tab1" value={0}>VM PIN Reset</Tab>
 		<!-- <Tab bind:group={$storeWxcTab} name="tab2" value={1}>TBD</Tab> -->

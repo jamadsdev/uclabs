@@ -2,68 +2,71 @@
 	import { enhance } from '$app/forms';
 	import { modalStore } from '@skeletonlabs/skeleton';
 
+	import { normalizePhones } from '$lib/utils';
 	import * as api from '$lib/wxc_api';
 	// Stores
-	import { storeWxcToken, storeUserData } from '$lib/stores.js';
+	import { storeWxcToken, wxcUsers } from '$lib/stores.js';
 	import { toastStore } from '@skeletonlabs/skeleton';
 
 	import ModalPinReset from '$lib/components/ModalPinReset.svelte';
 
 	let users = [];
-	let locations = [];
+	// let locations = [];
 	let errorMsg = '';
 	let filteredUsers = [];
+	let selUsers = [];
 	let searchTerm = '';
+	let loading = false;
 
-	const normalizePhones = (phones) => {
-		let data = {
-			did: '',
-			extension: ''
-		};
-
-		for (let i = 0; i < phones.length; i++) {
-			if (phones[i]['primary']) {
-				if (phones[i]['type'] == 'work_extension') {
-					data.extension = phones[i]['value'];
-				} else if (phones[i]['type'] == 'work') {
-					data.did = phones[i]['value'];
-				}
-			}
-		}
-
-		if (!data.did && !data.extension) {
-			return '';
+	function selectAll(users) {
+		if (selUsers.length > 0) {
+			selUsers = [];
 		} else {
-			return `${data.did} ext: ${data.extension}`;
+			selUsers = [...$wxcUsers];
 		}
-	};
-
+	}
 	async function listUsers() {
-		console.log('List Users Button Pressed');
+		selUsers = [];
+		loading = true;
 		let results = await api.get('telephony/config/voicemail/rules', $storeWxcToken['token']);
-
 		if (results.error) {
 			let t = {
-				message: results.message,
+				message: `${results.message} - See <a class="underline" href="/docs/troubleshooting">docs</a> for more information`,
 				timeout: 5000,
 				background: 'variant-filled-error'
 			};
 			toastStore.trigger(t);
+			loading = false;
 		} else {
 			if (results.defaultVoicemailPinRules['defaultVoicemailPinEnabled']) {
-				let resLocations = await api.get('locations', $storeWxcToken['token']);
+				let resUsers = await api.get('people?callingData=true', $storeWxcToken['token']);
 
-				locations = resLocations.items;
-
-				let { items } = await api.get('people?callingData=true', $storeWxcToken['token']);
-				// Only include users with LocationID
-				let temp = [];
-				for (let i = 0; i < items.length; i++) {
-					if (items[i].locationId != undefined) temp.push(items[i]);
+				if (resUsers.error) {
+					let t = {
+						message: results.message,
+						timeout: 5000,
+						background: 'variant-filled-error'
+					};
+					toastStore.trigger(t);
+					loading = false;
+				} else {
+					// Only include users with LocationID
+					let temp = [];
+					for (let i = 0; i < resUsers.items.length; i++) {
+						if (resUsers.items[i].locationId != undefined) temp.push(resUsers.items[i]);
+					}
+					// users = temp;
+					$wxcUsers = temp;
+					loading = false;
 				}
-				users = temp;
 			} else {
-				errorMsg = 'NoDefPIN';
+				let t = {
+					message: 'Default VM PIN is not set',
+					timeout: 5000,
+					background: 'variant-filled-error'
+				};
+				toastStore.trigger(t);
+				loading = false;
 			}
 		}
 	}
@@ -76,6 +79,8 @@
 			title: 'Voicemail PIN Reset',
 			body: 'PIN Reset Status',
 			data: user,
+			buttonTextCancel: 'Close',
+
 			response: (r) => {
 				if (r) console.log('Response:', r);
 			}
@@ -84,49 +89,59 @@
 	}
 	$: {
 		if (searchTerm) {
-			filteredUsers = users.filter((user) =>
+			filteredUsers = $wxcUsers.filter((user) =>
 				user.displayName.toLowerCase().includes(searchTerm.toLowerCase())
 			);
 		} else {
-			filteredUsers = [...users];
+			filteredUsers = [...$wxcUsers];
 		}
 	}
 </script>
 
-<div class="p-5">
-	<div class="grid grid-cols-4 gap-4 pb-2 lg:grid-cols-6">
+<div>
+	<span class="h1 pb-2">Voicemail PIN Reset</span>
+	<span class="h4 pb-2"
+		>&nbsp;&nbsp;&nbsp;(<a class="hover-cursor" href="/docs/wxc#voicemail-pin-reset">docs</a>)</span
+	>
+	<hr />
+	<div class="grid grid-cols-4 gap-4 py-5 lg:grid-cols-6">
 		<button
 			class="btn variant-glass-primary"
 			disabled={!$storeWxcToken['valid']}
-			on:click={listUsers}>Get User List</button
+			on:click={listUsers}
 		>
-		{#if users.length > 0}
+			{#if $wxcUsers.length > 0}
+				Refresh User List
+			{:else}
+				Get User List
+			{/if}
+		</button>
+		{#if $wxcUsers.length > 0}
 			<div class="grid col-span-2">
 				<input class="input" type="text" placeholder="Search by Name" bind:value={searchTerm} />
 			</div>
-			<div>
-				<!-- <select class="select">
-					<option value="1">Name</option>
-					<option value="2">Email</option>
-					<option value="3">Phone Number</option>
-					<option value="4">Location</option>
-				</select> -->
-			</div>
+		{/if}
+		{#if selUsers.length > 0 && $wxcUsers.length > 0}
+			<button class="btn variant-glass-secondary" on:click={resetPinModal(selUsers)}
+				>Bulk PIN Reset ({selUsers.length})
+			</button>
 		{/if}
 	</div>
 
-	{#if users == 'noDefPIN'}
-		<h3>
-			The default voicemail PIN has not been set.<br />This must be set in order for an admin to
-			reset a user's voicemail PIN
-		</h3>
-	{:else if users.length > 0}
-		<div class="w-4/5">
+	{#if loading}
+		<div class="grid grid-cols-4 gap-4 w-4/5">
+			<div class="placeholder animate-pulse" />
+			<div class="placeholder animate-pulse" />
+			<div class="placeholder animate-pulse" />
+			<div class="placeholder animate-pulse" />
+		</div>
+	{:else if $wxcUsers.length > 0}
+		<div class="w-full">
 			<div class="table-container">
 				<table class="table table-compact table-hover">
 					<thead>
 						<tr>
-							<th><input class="checkbox" type="checkbox" /></th>
+							<th><input class="checkbox" type="checkbox" on:click={selectAll($wxcUsers)} /></th>
 							<th>Name</th>
 							<th>Email</th>
 							<th>Phone Number</th>
@@ -137,7 +152,9 @@
 					<tbody>
 						{#each filteredUsers as user, i}
 							<tr>
-								<td><input class="checkbox" type="checkbox" /></td>
+								<td
+									><input class="checkbox" type="checkbox" bind:group={selUsers} value={user} /></td
+								>
 								<td>{user.displayName}</td>
 								<td>{user.emails}</td>
 								<td
@@ -152,7 +169,8 @@
 									<button
 										type="submit"
 										class="btn btn-sm variant-filled"
-										on:click={resetPinModal(user)}>Reset PIN</button
+										on:click={resetPinModal(user)}
+										disabled={selUsers.length > 0 ? true : false}>Reset PIN</button
 									>
 									<!-- </form> -->
 								</td>

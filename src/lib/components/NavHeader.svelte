@@ -1,5 +1,5 @@
 <script>
-	import { AppBar } from '@skeletonlabs/skeleton';
+	import { AppBar, LightSwitch } from '@skeletonlabs/skeleton';
 
 	import Icon from '$lib/components/Icon.svelte';
 
@@ -10,12 +10,19 @@
 	<svelte:fragment slot="lead">
 		<a href="/" class="btn btn-sm">
 			<span><Icon name="coffee" height="2em" width="2em" /></span>
-			<span class="pl-1 text-xl uppercase font-bold">UCLabs&nbsp ::</span>
-			<span class="text-lg font-bold">:abbr_here:</span>
+			<span class="pl-1 text-xl uppercase font-bold">UCLabs&nbsp</span>
+			<Icon name="chevrons-left" height="1.5em" width="1.5em" />
+			<!-- <div class="relative inline-block"> -->
+			<span class="text-xl font-bold">Sirius</span>
+			<span class="badge variant-filled-tertiary">Beta</span>
+			<!-- </div> -->
+
+			<Icon name="chevrons-right" height="1.5em" width="1.5em" />
 		</a>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
-		{#if !loggedin}
+		<LightSwitch />
+		<!-- {#if !loggedin}
 			<a href="/register" class="btn btn-sm variant-ghost-surface">
 				<span><Icon name="edit-3" height="1em" width="2em" /></span>
 				<span>Register</span>
@@ -25,7 +32,6 @@
 				<span>Login</span>
 			</a>
 		{:else}
-			<!-- <h3>Welcome, {user?.fname}</h3> -->
 			<a href="/settings" class="btn btn-sm variant-ghost-surface">
 				<span><Icon name="settings" height="1em" width="2em" /></span>
 				<span>Settings</span>
@@ -36,6 +42,6 @@
 					<span>Logout</span>
 				</button>
 			</form>
-		{/if}
+		{/if} -->
 	</svelte:fragment>
 </AppBar>

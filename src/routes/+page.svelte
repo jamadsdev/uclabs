@@ -16,7 +16,7 @@
 			</div>
 		</section>
 		<footer class="card-footer flex justify-end">
-			<a href="/wxc" class="btn variant-ghost-tertiary">Start Here</a>
+			<a href="/docs/getting-started" class="btn variant-ghost-tertiary">Start Here</a>
 		</footer>
 	</div>
 </div>

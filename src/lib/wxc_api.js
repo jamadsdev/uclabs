@@ -6,6 +6,7 @@ async function send({ method, path, data, token }) {
 	const opts = { method, headers: {} };
 
 	if (data) {
+		console.log('API Data Found');
 		opts.headers['Content-Type'] = 'application/json';
 		opts.body = JSON.stringify(data);
 	}

@@ -7,7 +7,9 @@
 	import '../app.postcss';
 
 	import { AppShell, Modal, Toast } from '@skeletonlabs/skeleton';
+	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { storeCurrentUrl } from '$lib/stores';
 
 	import NavHeader from '$lib/components/NavHeader.svelte';
 	import NavSideBar from '$lib/components/NavSideBar.svelte';
@@ -19,6 +21,17 @@
 	if (data.user) {
 		loggedin = true;
 	}
+
+	afterNavigate((params) => {
+		// Store current page route URL
+		storeCurrentUrl.set($page.url.pathname);
+		// Scroll to top
+		const isNewPage = params.from && params.to && params.from.route.id !== params.to.route.id;
+		const elemPage = document.querySelector('#page');
+		if (isNewPage && elemPage !== null) {
+			elemPage.scrollTop = 0;
+		}
+	});
 
 	function matchPathWhitelist(pageUrlPath) {
 		// If homepage route
@@ -38,14 +51,10 @@
 
 <AppShell {slotSidebarLeft}>
 	<svelte:fragment slot="header"><NavHeader {loggedin} /></svelte:fragment>
-	<svelte:fragment slot="sidebarLeft"><NavSideBar /></svelte:fragment>
-	<!-- (sidebarRight) -->
-	<!-- (pageHeader) -->
-	<!-- Router Slot -->
-	<div class="p-10">
+	<svelte:fragment slot="sidebarLeft"
+		><NavSideBar class="hidden lg:grid w-[360px] overflow-hidden" /></svelte:fragment
+	>
+	<div class="pt-4">
 		<slot />
 	</div>
-	<!-- ---- / ---- -->
-	<svelte:fragment slot="pageFooter">Page Footer</svelte:fragment>
-	<!-- (footer) -->
 </AppShell>

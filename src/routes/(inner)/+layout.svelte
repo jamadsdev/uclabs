@@ -9,6 +9,5 @@
 	<svelte:fragment slot="header">
 		<NavWxcHeader />
 	</svelte:fragment>
-	<!-- Router Slot -->
 	<slot />
 </AppShell>
