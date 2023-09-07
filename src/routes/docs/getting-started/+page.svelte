@@ -21,7 +21,7 @@
 	<section class="space-y-4">
 		<h2 class="h2">Requirements</h2>
 		<blockquote class="blockquote">Partner accounts are not currently suppported.</blockquote>
-		<p>Most/All of these utilities require you to be at least one of the following roles:</p>
+		<p>Most/All of these utilities require you to have at least one of the following roles:</p>
 		<ul class="list pl-5">
 			<li>
 				<span><Icon name="chevron-right" /></span>

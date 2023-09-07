@@ -4,6 +4,7 @@
 	import LayoutContent from '$lib/layouts/LayoutContent.svelte';
 	import VmPinReset from './VMPinReset.svelte';
 	import VmNotify from './VMNotify.svelte';
+	import Hoteling from './Hoteling.svelte';
 </script>
 
 <LayoutContent enableToc={true}>
@@ -13,10 +14,7 @@
 	</header>
 	<VmPinReset />
 	<VmNotify />
-	<div class="space-y-4">
-		<h2 class="h2">Hoteling</h2>
-		<p>Coming Soon</p>
-	</div>
+	<Hoteling />
 	<div class="space-y-4">
 		<h2 class="h2">Call Forwarding</h2>
 		<p>Coming Soon</p>

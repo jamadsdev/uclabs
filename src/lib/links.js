@@ -15,7 +15,7 @@ export const menuLinks = {
 			list: [
 				{ href: '/wxc/vmpinreset', label: 'VM PIN Reset' },
 				{ href: '/docs/wxc#voicemail-notifications', label: 'VM Notify', badge: 'Coming Soon' },
-				{ href: '/docs/wxc#hoteling', label: 'Hoteling', badge: 'Coming Soon' },
+				{ href: '/wxc/hoteling', label: 'Hoteling' },
 				{ href: '/docs/wxc#call-forwarding', label: 'Call Forward', badge: 'Coming Soon' }
 			]
 		}
